@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
 app.use(cors({
-    origin:"http://localhost:5173",
+    origin:"https://essexpense.netlify.app",
 }));
 
 mongoose.connect("mongodb+srv://fabiolr81:xk3fOGtbt9Po7uVE@cluster0.y1dx2y0.mongodb.net/");
