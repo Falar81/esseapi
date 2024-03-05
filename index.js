@@ -28,7 +28,7 @@ app.get('/status', (request, response) => {
 });
 
 app.get('/sampleData', (req, res) => {
-    ExpensesModel.find({})
+    ExpensesModel.find({}).sort({date:'asc' })
         .then(expenses=>res.json(expenses))
         .catch(err => res.json(err));
     // res.json(data);
