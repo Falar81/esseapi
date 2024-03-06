@@ -45,7 +45,7 @@ app.delete('/sampleData/:id', (req, res) => {
     
     ExpensesModel.findByIdAndDelete({_id:req.params.id})
         .then(()=>{
-            ExpensesModel.find({})
+            ExpensesModel.find({}).sort({date:'desc' })
                 .then(expenses=>res.json(expenses))
                 .catch(err => res.json(err));
         })
@@ -56,7 +56,7 @@ app.post('/sampleData', (req, res) => {
     // data = [...data, {...req.body}]
     ExpensesModel.create(req.body)
         .then(()=>{
-            ExpensesModel.find({})
+            ExpensesModel.find({}).sort({date:'desc' })
                 .then(expenses=>res.json(expenses))
                 .catch(err => res.json(err));
         })
