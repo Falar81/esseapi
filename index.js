@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
 app.use(cors({
-    origin:"*",
+    origin: "*",
 }));
 
 mongoose.connect("mongodb+srv://fabiolr81:xk3fOGtbt9Po7uVE@cluster0.y1dx2y0.mongodb.net/");
@@ -22,46 +22,54 @@ app.get('/', (req, res) => {
 })
 app.get('/status', (request, response) => {
     const status = {
-          Status: 'Running'
+        Status: 'Running'
     }
     response.send(status);
 });
 
 app.get('/sampleData', (req, res) => {
-    ExpensesModel.find({}).sort({date:'desc' })
-        .then(expenses=>res.json(expenses))
+    ExpensesModel.find({}).sort({ date: 'desc' })
+        .then(expenses => res.json(expenses))
         .catch(err => res.json(err));
     // res.json(data);
 })
 
 app.post('/', (request, response) => {
-    if(!request.body.nome) response.send(401);
+    if (!request.body.nome) response.send(401);
     response.send(request.body);
     console.log(request.body);
 });
 
 // expenses.filter(expense => expense.id !== id)
 app.delete('/sampleData/:id', (req, res) => {
-    
-    ExpensesModel.findByIdAndDelete({_id:req.params.id})
-        .then(()=>{
-            ExpensesModel.find({}).sort({date:'desc' })
-                .then(expenses=>res.json(expenses))
+
+    ExpensesModel.findByIdAndDelete({ _id: req.params.id })
+        .then(() => {
+            ExpensesModel.find({}).sort({ date: 'desc' })
+                .then(expenses => res.json(expenses))
                 .catch(err => res.json(err));
         })
-        .catch(err=>res.json(err))
+        .catch(err => res.json(err))
 });
 
 app.post('/sampleData', (req, res) => {
     // data = [...data, {...req.body}]
     ExpensesModel.create(req.body)
-        .then(()=>{
-            ExpensesModel.find({}).sort({date:'desc' })
-                .then(expenses=>res.json(expenses))
+        .then(() => {
+            ExpensesModel.find({}).sort({ date: 'desc' })
+                .then(expenses => res.json(expenses))
                 .catch(err => res.json(err));
         })
         .catch(err => res.json(err))
 
+});
+
+app.get('/sampleData/:from/:to', (req, res) => {
+
+    ExpensesModel.find({
+        date: { $gte: req.params.from, $lte: req.params.to },
+    }).then(expenses => res.json(expenses))
+        .catch(err => res.json(err));
 });
 
 app.listen(3000, () => {
