@@ -53,8 +53,9 @@ app.delete('/sampleData/:id', (req, res) => {
 });
 
 app.post('/sampleData', (req, res) => {
-    // data = [...data, {...req.body}]
-    ExpensesModel.create(req.body)
+     data = {...req.body, date: moment(req.body.date).format('YYYY-MM-DD')} //escludo il time zone per la query range date
+     console.log(data);
+    ExpensesModel.create(data)
         .then(() => {
             ExpensesModel.find({}).sort({ date: 'desc' })
                 .then(expenses => res.json(expenses))
@@ -65,7 +66,7 @@ app.post('/sampleData', (req, res) => {
 });
 
 app.get('/sampleData/:from/:to', (req, res) => {
-
+    
     ExpensesModel.find({
         date: { $gte: req.params.from, $lte: req.params.to },
     }).then(expenses => res.json(expenses))
