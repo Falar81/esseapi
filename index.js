@@ -69,7 +69,7 @@ app.get('/sampleData/:from/:to', (req, res) => {
     
     ExpensesModel.find({
         date: { $gte: req.params.from, $lte: req.params.to },
-    }).then(expenses => res.json(expenses))
+    }).sort({ date: 'desc' }).then(expenses => res.json(expenses))
         .catch(err => res.json(err));
 });
 
